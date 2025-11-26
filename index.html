@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitControl - Sistema de Academia</title>
+    <title>FitControl</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>💪 FitControl Pro</h1>
+            <h1>💪 FitControl </h1>
             <nav>
                 <button onclick="showTab('chat')"><i class="fas fa-comments"></i> Chat</button>
                 <button onclick="showTab('alunos')"><i class="fas fa-users"></i> Alunos</button>
@@ -20,7 +20,6 @@
             </nav>
         </header>
 
-        <!-- CHAT -->
         <div id="chat" class="tab active">
             <div class="chat-container">
                 <div class="chat-messages" id="messages">
@@ -35,11 +34,9 @@
             </div>
         </div>
 
-        <!-- CADASTRO DE ALUNOS -->
         <div id="alunos" class="tab">
             <h2><i class="fas fa-users"></i> Gerenciar Alunos</h2>
             
-            <!-- Formulário de Cadastro/Edição -->
             <div class="form-card">
                 <h3 id="form-title"><i class="fas fa-user-plus"></i> Cadastrar Novo Aluno</h3>
                 <form id="alunoForm" onsubmit="salvarAluno(event)">
@@ -85,7 +82,6 @@
                 </form>
             </div>
 
-            <!-- Lista de Alunos -->
             <div class="lista-alunos">
                 <h3><i class="fas fa-list"></i> Alunos Cadastrados</h3>
                 <div id="listaAlunos" class="alunos-grid">
@@ -94,7 +90,6 @@
             </div>
         </div>
 
-        <!-- AVALIAÇÃO -->
         <div id="avaliacao" class="tab">
             <h2><i class="fas fa-clipboard-check"></i> Avaliação Física</h2>
             
@@ -140,7 +135,6 @@
                 </form>
             </div>
 
-            <!-- Histórico de Avaliações -->
             <div class="historico">
                 <h3><i class="fas fa-history"></i> Histórico de Avaliações</h3>
                 <div class="filtros">
@@ -155,7 +149,6 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação -->
     <div id="confirmModal" class="modal">
         <div class="modal-content">
             <h3><i class="fas fa-exclamation-triangle"></i> Confirmação</h3>
