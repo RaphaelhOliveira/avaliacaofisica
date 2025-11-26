@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitControl - Sistema de Academia</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 FitControl Pro</h1>
+            <nav>
+                <button onclick="showTab('chat')"><i class="fas fa-comments"></i> Chat</button>
+                <button onclick="showTab('alunos')"><i class="fas fa-users"></i> Alunos</button>
+                <button onclick="showTab('avaliacao')"><i class="fas fa-clipboard-check"></i> Avaliação</button>
+            </nav>
+        </header>
+
+        <!-- CHAT -->
+        <div id="chat" class="tab active">
+            <div class="chat-container">
+                <div class="chat-messages" id="messages">
+                    <div class="message bot">
+                        <strong>Assistente:</strong> Olá! Em que posso ajudar?
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key=='Enter') sendMessage()">
+                    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CADASTRO DE ALUNOS -->
+        <div id="alunos" class="tab">
+            <h2><i class="fas fa-users"></i> Gerenciar Alunos</h2>
+            
+            <!-- Formulário de Cadastro/Edição -->
+            <div class="form-card">
+                <h3 id="form-title"><i class="fas fa-user-plus"></i> Cadastrar Novo Aluno</h3>
+                <form id="alunoForm" onsubmit="salvarAluno(event)">
+                    <input type="hidden" id="alunoId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo:</label>
+                            <input type="text" id="nome" placeholder="Nome do aluno" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idade">Idade:</label>
+                            <input type="number" id="idade" placeholder="Idade" min="12" max="100" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="peso">Peso (kg):</label>
+                            <input type="number" id="peso" placeholder="Peso" step="0.1" min="30" max="200" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="altura">Altura (m):</label>
+                            <input type="number" id="altura" placeholder="Altura" step="0.01" min="1.00" max="2.50" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="objetivo">Objetivo:</label>
+                        <select id="objetivo" required>
+                            <option value="">Selecione o objetivo</option>
+                            <option value="emagrecimento">🏃‍♂️ Emagrecimento</option>
+                            <option value="musculacao">💪 Musculação</option>
+                            <option value="condicionamento">⚡ Condicionamento</option>
+                            <option value="reabilitacao">❤️ Reabilitação</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn" class="btn-primary">
+                            <i class="fas fa-save"></i> Cadastrar Aluno
+                        </button>
+                        <button type="button" id="cancel-btn" class="btn-secondary" onclick="cancelarEdicao()" style="display: none;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de Alunos -->
+            <div class="lista-alunos">
+                <h3><i class="fas fa-list"></i> Alunos Cadastrados</h3>
+                <div id="listaAlunos" class="alunos-grid">
+                    <div class="loading">Carregando alunos...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AVALIAÇÃO -->
+        <div id="avaliacao" class="tab">
+            <h2><i class="fas fa-clipboard-check"></i> Avaliação Física</h2>
+            
+            <div class="form-card">
+                <form id="avaliacaoForm" onsubmit="fazerAvaliacao(event)">
+                    <div class="form-group">
+                        <label for="alunoAvaliacao">Aluno:</label>
+                        <select id="alunoAvaliacao" required>
+                            <option value="">Carregando alunos...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pesoAtual">Peso Atual (kg):</label>
+                            <input type="number" id="pesoAtual" step="0.1" required oninput="calcularIMC()">
+                        </div>
+                        <div class="form-group">
+                            <label for="alturaAtual">Altura Atual (m):</label>
+                            <input type="number" id="alturaAtual" step="0.01" required oninput="calcularIMC()">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gordura">% Gordura Corporal:</label>
+                            <input type="number" id="gordura" step="0.1" min="0" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="musculo">% Massa Muscular:</label>
+                            <input type="number" id="musculo" step="0.1" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <div id="resultadoIMC" class="imc-result" style="display: none;">
+                        <h4>📊 Resultado do IMC</h4>
+                        <div id="imcValue"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Salvar Avaliação
+                    </button>
+                </form>
+            </div>
+
+            <!-- Histórico de Avaliações -->
+            <div class="historico">
+                <h3><i class="fas fa-history"></i> Histórico de Avaliações</h3>
+                <div class="filtros">
+                    <select id="filtroAluno" onchange="carregarAvaliacoes()">
+                        <option value="">Todos os alunos</option>
+                    </select>
+                </div>
+                <div id="historicoAvaliacoes" class="avaliacoes-grid">
+                    <div class="loading">Carregando avaliações...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-exclamation-triangle"></i> Confirmação</h3>
+            <p id="confirmMessage">Tem certeza que deseja excluir este item?</p>
+            <div class="modal-actions">
+                <button id="confirmYes" class="btn-danger">Sim, Excluir</button>
+                <button id="confirmNo" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
