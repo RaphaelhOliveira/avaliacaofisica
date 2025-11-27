@@ -1,17 +1,17 @@
 :root {
-    --primary: #4361ee;
-    --primary-dark: #3a56d4;
-    --secondary: #7209b7;
-    --success: #06d6a0;
-    --warning: #ffd166;
-    --danger: #ef476f;
-    --dark: #1d3557;
-    --light: #f8f9fa;
-    --gray-100: #f1faee;
-    --gray-200: #a8dadc;
-    --gray-300: #457b9d;
-    --gray-400: #1d3557;
-    --border: #e9ecef;
+    --primary: #FF6B35;       /* Laranja principal */
+    --primary-dark: #E55A2B;  /* Laranja mais escuro */
+    --secondary: #FF8C42;     /* Laranja secundário */
+    --success: #4CAF50;       /* Verde para sucesso */
+    --warning: #FF9800;       /* Laranja para alertas */
+    --danger: #F44336;        /* Vermelho para perigo */
+    --dark: #2D3748;          /* Cinza escuro */
+    --light: #FFFFFF;         /* Branco */
+    --gray-100: #F7FAFC;      /* Cinza muito claro */
+    --gray-200: #EDF2F7;      /* Cinza claro */
+    --gray-300: #718096;      /* Cinza médio */
+    --gray-400: #4A5568;      /* Cinza escuro */
+    --border: #E2E8F0;        /* Borda cinza */
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --radius: 12px;
@@ -26,7 +26,7 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
     color: var(--dark);
     line-height: 1.6;
     min-height: 100vh;
@@ -48,7 +48,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
     padding: 20px;
 }
 
@@ -66,7 +66,7 @@ body {
 .logo i {
     font-size: 4rem;
     margin-bottom: 1rem;
-    color: #ffd166;
+    color: #FFFFFF;
 }
 
 .logo h1 {
@@ -95,7 +95,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
 }
 
 .auth-card {
@@ -186,7 +186,7 @@ body {
 .input-group textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .input-group label {
@@ -1126,7 +1126,7 @@ body {
 .profile-form select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 /* Calendar */
