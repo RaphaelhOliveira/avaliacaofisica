@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitAssessment - Sistema de Avaliação Física</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-container">
+                <div class="welcome-content">
+                    <div class="logo">
+                        <i class="fas fa-dumbbell"></i>
+                        <h1>FitAssessment</h1>
+                    </div>
+                    <p class="welcome-text">Sistema completo de avaliação física</p>
+                    <div class="welcome-buttons">
+                        <button class="btn btn-primary btn-large" onclick="showScreen('login-screen')">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </button>
+                        <button class="btn btn-secondary btn-large" onclick="showScreen('register-screen')">
+                            <i class="fas fa-user-plus"></i> Cadastrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="login-screen" class="screen">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <button class="back-btn" onclick="showScreen('welcome-screen')">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h1>Login</h1>
+                    </div>
+                    <form id="login-form">
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" placeholder="Seu email" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="login-password" placeholder="Sua senha" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        Não tem conta? <a href="#" onclick="showScreen('register-screen')">Cadastre-se aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="register-screen" class="screen">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <button class="back-btn" onclick="showScreen('welcome-screen')">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h1>Cadastro</h1>
+                    </div>
+                    <form id="register-form">
+                        <div class="input-group">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="register-name" placeholder="Nome completo" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="register-email" placeholder="Seu email" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-password" placeholder="Sua senha" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-user-tag input-icon"></i>
+                            <select id="register-type" required>
+                                <option value="">Tipo de usuário</option>
+                                <option value="professor">Professor</option>
+                                <option value="aluno">Aluno</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-user-plus"></i> Cadastrar
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        Já tem conta? <a href="#" onclick="showScreen('login-screen')">Faça login aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-screen" class="screen">
+            <header class="header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <button class="menu-toggle" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="logo-small">
+                            <i class="fas fa-dumbbell"></i>
+                            FitAssessment
+                        </h1>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-menu">
+                            <span class="user-name" id="header-user-name">Usuário</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a href="#" onclick="showSection('perfil')"><i class="fas fa-user"></i> Perfil</a>
+                                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <nav id="sidebar" class="sidebar">
+                <div class="sidebar-content">
+                    <div class="sidebar-user">
+                        <div class="user-avatar-large">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="sidebar-user-name">Usuário</span>
+                            <span class="user-type" id="sidebar-user-type">Tipo</span>
+                        </div>
+                    </div>
+
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active" onclick="showSection('dashboard')">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('avaliacoes')">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Avaliações</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('nova-avaliacao')">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Nova Avaliação</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('alunos')">
+                            <i class="fas fa-users"></i>
+                            <span>Alunos</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('exercicios')">
+                            <i class="fas fa-running"></i>
+                            <span>Exercícios</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('treinos')">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Treinos</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('dieta')">
+                            <i class="fas fa-apple-alt"></i>
+                            <span>Dieta</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('medidas')">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>Medidas</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('evolucao')">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Evolução</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('chat')">
+                            <i class="fas fa-robot"></i>
+                            <span>Assistente IA</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('calendario')">
+                            <i class="fas fa-calendar"></i>
+                            <span>Calendário</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('relatorios')">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Relatórios</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('configuracoes')">
+                            <i class="fas fa-cog"></i>
+                            <span>Configurações</span>
+                        </li>
+                        <li class="menu-item" onclick="showSection('perfil')">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Meu Perfil</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="main-content">
+                <div id="dashboard-section" class="section active">
+                    <div class="section-header">
+                        <div>
+                            <h2>Dashboard</h2>
+                            <p>Visão geral do seu sistema</p>
+                        </div>
+                        <div class="current-date" id="current-date"></div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-avaliacoes">0</h3>
+                                <p>Avaliações Realizadas</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-alunos">0</h3>
+                                <p>Alunos Cadastrados</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-treinos">0</h3>
+                                <p>Treinos Ativos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-mensagens">0</h3>
+                                <p>Mensagens</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h3>Últimas Avaliações</h3>
+                            <div id="recent-avaliacoes" class="recent-list">
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <h3>Atividade Recente</h3>
+                            <div id="recent-activity" class="activity-list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="avaliacoes-section" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Avaliações Físicas</h2>
+                            <p>Gerencie todas as avaliações</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showSection('nova-avaliacao')">
+                            <i class="fas fa-plus"></i> Nova Avaliação
+                        </button>
+                    </div>
+                    <div class="filters" style="margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center;">
+                        <div class="input-group" style="flex: 1; margin: 0;">
+                            <i class="fas fa-search input-icon"></i>
+                            <input type="text" id="search-avaliacoes" placeholder="Buscar avaliações...">
+                        </div>
+                        <select id="filter-status" style="padding: 0.75rem; border: 2px solid var(--border); border-radius: var(--radius);">
+                            <option value="">Todos os status</option>
+                            <option value="pendente">Pendente</option>
+                            <option value="concluido">Concluído</option>
+                        </select>
+                    </div>
+                    <div id="avaliacoes-list" class="cards-grid">
+                    </div>
+                </div>
+
+                <div id="nova-avaliacao-section" class="section">
+                    <div class="section-header">
+                        <h2>Nova Avaliação Física</h2>
+                        <p>Preencha os dados da avaliação</p>
+                    </div>
+                    <form id="nova-avaliacao-form" class="form-steps">
+                    </form>
+                </div>
+
+                <div id="alunos-section" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Alunos</h2>
+                            <p>Gerencie seus alunos</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="novoAluno()">
+                            <i class="fas fa-plus"></i> Novo Aluno
+                        </button>
+                    </div>
+                    <div id="alunos-list" class="cards-grid">
+                    </div>
+                </div>
+
+                <div id="exercicios-section" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Exercícios</h2>
+                            <p>Biblioteca de exercícios</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="novoExercicio()">
+                            <i class="fas fa-plus"></i> Novo Exercício
+                        </button>
+                    </div>
+                    <div id="exercicios-list" class="exercises-grid">
+                    </div>
+                </div>
+
+                <div id="treinos-section" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Treinos</h2>
+                            <p>Planos de treinamento</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="novoTreino()">
+                            <i class="fas fa-plus"></i> Novo Treino
+                        </button>
+                    </div>
+                    <div id="treinos-list" class="cards-grid">
+                    </div>
+                </div>
+
+                <div id="dieta-section" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Planos Alimentares</h2>
+                            <p>Dietas e nutrição</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="novaDieta()">
+                            <i class="fas fa-plus"></i> Nova Dieta
+                        </button>
+                    </div>
+                    <div id="dietas-list" class="cards-grid">
+                    </div>
+                </div>
+
+                <div id="medidas-section" class="section">
+                    <div class="section-header">
+                        <h2>Medidas Corporais</h2>
+                        <p>Acompanhamento de medidas</p>
+                    </div>
+                    <div id="medidas-chart" class="chart-container">
+                    </div>
+                </div>
+
+                <div id="evolucao-section" class="section">
+                    <div class="section-header">
+                        <h2>Evolução do Aluno</h2>
+                        <p>Gráficos e progresso</p>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Evolução do Peso</h3>
+                            <div class="chart-placeholder">Gráfico do Peso</div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Evolução do IMC</h3>
+                            <div class="chart-placeholder">Gráfico do IMC</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chat-section" class="section">
+                    <div class="section-header">
+                        <h2>Assistente Virtual</h2>
+                        <p>Obtenha ajuda sobre avaliações físicas</p>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-main">
+                            <div class="chat-header">
+                                <div class="assistant-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="assistant-info">
+                                    <h4>Assistente FitAssessment</h4>
+                                    <span>Online</span>
+                                </div>
+                            </div>
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="message assistant">
+                                    <div class="message-bubble">
+                                        <div class="message-text">
+                                            Olá! Sou seu assistente virtual. Posso ajudar você com:
+                                            <br>• Cálculos de IMC e avaliações
+                                            <br>• Planos de treino
+                                            <br>• Dicas de nutrição
+                                            <br>• Interpretação de resultados
+                                            <br><br>Como posso ajudar você hoje?
+                                        </div>
+                                        <div class="message-time">Agora</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <div class="chat-input">
+                                    <input type="text" id="chat-message-input" placeholder="Digite sua pergunta sobre avaliação física...">
+                                    <button class="btn btn-primary" onclick="sendMessage()">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                                <div class="quick-actions">
+                                    <div class="quick-action" onclick="askAssistant('Como calcular o IMC?')">
+                                        Calcular IMC
+                                    </div>
+                                    <div class="quick-action" onclick="askAssistant('Qual é o peso ideal?')">
+                                        Peso Ideal
+                                    </div>
+                                    <div class="quick-action" onclick="askAssistant('Dicas para ganho de massa')">
+                                        Ganho de Massa
+                                    </div>
+                                    <div class="quick-action" onclick="askAssistant('Exercícios para emagrecer')">
+                                        Exercícios
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="calendario-section" class="section">
+                    <div class="section-header">
+                        <h2>Calendário</h2>
+                        <p>Agenda de avaliações e treinos</p>
+                    </div>
+                    <div id="calendar" class="calendar-container">
+                    </div>
+                </div>
+
+                <div id="relatorios-section" class="section">
+                    <div class="section-header">
+                        <h2>Relatórios</h2>
+                        <p>Relatórios e análises</p>
+                    </div>
+                    <div class="reports-grid">
+                    </div>
+                </div>
+
+                <div id="configuracoes-section" class="section">
+                    <div class="section-header">
+                        <h2>Configurações</h2>
+                        <p>Configure o sistema</p>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="settings-menu">
+                            <div class="settings-item active" onclick="showSettingsTab('geral')">
+                                <i class="fas fa-cog"></i>
+                                <span>Geral</span>
+                            </div>
+                            <div class="settings-item" onclick="showSettingsTab('notificacoes')">
+                                <i class="fas fa-bell"></i>
+                                <span>Notificações</span>
+                            </div>
+                            <div class="settings-item" onclick="showSettingsTab('privacidade')">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Privacidade</span>
+                            </div>
+                            <div class="settings-item" onclick="showSettingsTab('conta')">
+                                <i class="fas fa-user"></i>
+                                <span>Conta</span>
+                            </div>
+                        </div>
+                        <div class="settings-content">
+                            <div id="settings-geral" class="settings-tab active">
+                                <h3>Configurações Gerais</h3>
+                                <div class="settings-section">
+                                    <h4>Preferências do Sistema</h4>
+                                    <div class="input-group">
+                                        <label>Idioma</label>
+                                        <select>
+                                            <option>Português (Brasil)</option>
+                                            <option>English</option>
+                                            <option>Español</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Fuso Horário</label>
+                                        <select>
+                                            <option>Brasília (UTC-3)</option>
+                                            <option>UTC-4</option>
+                                            <option>UTC-5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="settings-section">
+                                    <h4>Unidades de Medida</h4>
+                                    <div class="input-group">
+                                        <label>Sistema de Medidas</label>
+                                        <select>
+                                            <option>Métrico (kg, cm)</option>
+                                            <option>Imperial (lb, in)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary">Salvar Configurações</button>
+                            </div>
+
+                            <div id="settings-notificacoes" class="settings-tab">
+                                <h3>Configurações de Notificação</h3>
+                                <div class="settings-section">
+                                    <h4>Notificações por Email</h4>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span>Notificações de novas avaliações</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span>Lembretes de consultas</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span>Relatórios semanais</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary">Salvar Preferências</button>
+                            </div>
+
+                            <div id="settings-privacidade" class="settings-tab">
+                                <h3>Privacidade e Segurança</h3>
+                                <div class="settings-section">
+                                    <h4>Controle de Dados</h4>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span>Compartilhar dados anônimos para melhorias</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <span>Permitir análise de uso</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="settings-section">
+                                    <h4>Exportação de Dados</h4>
+                                    <button class="btn btn-secondary" style="margin-bottom: 1rem;">
+                                        <i class="fas fa-download"></i> Exportar Meus Dados
+                                    </button>
+                                    <br>
+                                    <button class="btn btn-danger">
+                                        <i class="fas fa-trash"></i> Excluir Minha Conta
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="settings-conta" class="settings-tab">
+                                <h3>Configurações da Conta</h3>
+                                <div class="settings-section">
+                                    <h4>Informações da Conta</h4>
+                                    <div class="input-group">
+                                        <label>Plano Atual</label>
+                                        <input type="text" value="Plano Básico" readonly style="background: var(--gray-100);">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Data de Expiração</label>
+                                        <input type="text" value="31/12/2024" readonly style="background: var(--gray-100);">
+                                    </div>
+                                </div>
+                                <div class="settings-section">
+                                    <h4>Atualizar Plano</h4>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-crown"></i> Fazer Upgrade
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="perfil-section" class="section">
+                    <div class="section-header">
+                        <h2>Meu Perfil</h2>
+                        <p>Gerencie suas informações</p>
+                    </div>
+                    <div class="profile-container">
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user"></i>
+                                    <button class="edit-avatar-btn">
+                                        <i class="fas fa-camera"></i>
+                                    </button>
+                                </div>
+                                <div class="profile-info">
+                                    <h3 id="profile-full-name">Nome do Usuário</h3>
+                                    <p id="profile-email">email@exemplo.com</p>
+                                    <span class="user-badge" id="profile-type-badge">Professor</span>
+                                </div>
+                            </div>
+                            <form id="profile-form" class="profile-form">
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Nome Completo</label>
+                                        <input type="text" id="profile-name" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Email</label>
+                                        <input type="email" id="profile-email-input" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Telefone</label>
+                                        <input type="tel" id="profile-phone">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Especialidade</label>
+                                        <input type="text" id="profile-specialty">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Nova Senha</label>
+                                        <input type="password" id="profile-new-password" placeholder="Deixe em branco para manter a atual">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Confirmar Senha</label>
+                                        <input type="password" id="profile-confirm-password">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-dumbbell fa-spin"></i>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
