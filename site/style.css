@@ -1,17 +1,17 @@
 :root {
-    --primary: #FF6B35;       /* Laranja principal */
-    --primary-dark: #E55A2B;  /* Laranja mais escuro */
-    --secondary: #FF8C42;     /* Laranja secundário */
-    --success: #4CAF50;       /* Verde para sucesso */
-    --warning: #FF9800;       /* Laranja para alertas */
-    --danger: #F44336;        /* Vermelho para perigo */
-    --dark: #2D3748;          /* Cinza escuro */
-    --light: #FFFFFF;         /* Branco */
-    --gray-100: #F7FAFC;      /* Cinza muito claro */
-    --gray-200: #EDF2F7;      /* Cinza claro */
-    --gray-300: #718096;      /* Cinza médio */
-    --gray-400: #4A5568;      /* Cinza escuro */
-    --border: #E2E8F0;        /* Borda cinza */
+    --primary: #FF6B35;       
+    --primary-dark: #E55A2B;  
+    --secondary: #FF8C42;     
+    --success: #4CAF50;      
+    --warning: #FF9800;       
+    --danger: #F44336;        
+    --dark: #2D3748;          
+    --light: #FFFFFF;         
+    --gray-100: #F7FAFC;      
+    --gray-200: #EDF2F7;      
+    --gray-300: #718096;     
+    --gray-400: #4A5568;      
+    --border: #E2E8F0;        
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --radius: 12px;
@@ -32,7 +32,7 @@ body {
     min-height: 100vh;
 }
 
-/* Screens */
+
 .screen {
     display: none;
     min-height: 100vh;
@@ -42,7 +42,7 @@ body {
     display: block;
 }
 
-/* Welcome Screen */
+
 .welcome-container {
     min-height: 100vh;
     display: flex;
@@ -88,7 +88,7 @@ body {
     flex-direction: column;
 }
 
-/* Auth Screens */
+
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -153,7 +153,7 @@ body {
     text-decoration: underline;
 }
 
-/* Input Groups */
+
 .input-group {
     position: relative;
     margin-bottom: 1.5rem;
@@ -196,7 +196,7 @@ body {
     color: var(--dark);
 }
 
-/* Buttons */
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -262,7 +262,7 @@ body {
     width: 100%;
 }
 
-/* Dashboard Layout */
+
 .header {
     background: white;
     box-shadow: var(--shadow);
@@ -315,7 +315,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* User Menu */
+
 .user-menu {
     position: relative;
     display: flex;
@@ -367,7 +367,7 @@ body {
     background: var(--gray-100);
 }
 
-/* Sidebar */
+
 .sidebar {
     position: fixed;
     left: 0;
@@ -474,7 +474,7 @@ body {
     font-weight: 600;
 }
 
-/* Main Content */
+
 .main-content {
     margin-left: 0;
     padding: 2rem;
@@ -526,7 +526,7 @@ body {
     margin-left: auto;
 }
 
-/* Stats Grid */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -577,7 +577,7 @@ body {
     font-weight: 500;
 }
 
-/* Content Grid */
+
 .content-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -597,7 +597,7 @@ body {
     font-weight: 600;
 }
 
-/* Recent Items */
+
 .recent-list {
     display: flex;
     flex-direction: column;
@@ -640,7 +640,7 @@ body {
     color: white;
 }
 
-/* Activity Items */
+
 .activity-list {
     display: flex;
     flex-direction: column;
@@ -673,7 +673,7 @@ body {
     color: var(--gray-300);
 }
 
-/* CHAT COMO ASSISTENTE VIRTUAL */
+
 .chat-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -827,7 +827,7 @@ body {
     color: white;
 }
 
-/* Cards Grid */
+
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -907,7 +907,7 @@ body {
     margin-top: auto;
 }
 
-/* Forms */
+
 .form-container {
     background: white;
     padding: 2rem;
@@ -936,7 +936,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Multi-step Form */
+
 .form-steps {
     background: white;
     padding: 2rem;
@@ -1003,7 +1003,7 @@ body {
     border-top: 1px solid var(--border);
 }
 
-/* Loading */
+
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -1037,7 +1037,7 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* Profile */
+
 .profile-container {
     max-width: 800px;
 }
@@ -1129,7 +1129,7 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
-/* Calendar */
+
 .calendar-container {
     background: white;
     padding: 2rem;
@@ -1186,7 +1186,7 @@ body {
     margin-top: 0.5rem;
 }
 
-/* Exercises Grid */
+
 .exercises-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1221,7 +1221,7 @@ body {
     margin: 0 auto 1rem;
 }
 
-/* Diet Plans */
+
 .diet-plan {
     background: white;
     padding: 1.5rem;
@@ -1244,7 +1244,7 @@ body {
     font-size: 1.1rem;
 }
 
-/* Charts */
+
 .chart-container {
     background: white;
     padding: 2rem;
@@ -1293,7 +1293,7 @@ body {
     border-radius: var(--radius);
 }
 
-/* Reports */
+
 .reports-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1313,7 +1313,7 @@ body {
     color: var(--dark);
 }
 
-/* Settings */
+
 .settings-grid {
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -1417,7 +1417,7 @@ input:checked + .toggle-slider:before {
     display: block;
 }
 
-/* Modal */
+
 .modal {
     display: none;
     position: fixed;
@@ -1461,7 +1461,7 @@ input:checked + .toggle-slider:before {
     color: var(--gray-300);
 }
 
-/* Estilos para telas vazias */
+
 .no-data {
     text-align: center;
     padding: 3rem;
@@ -1488,7 +1488,7 @@ input:checked + .toggle-slider:before {
     font-size: 1.1rem;
 }
 
-/* Filters */
+
 .filters {
     display: flex;
     gap: 1rem;
@@ -1497,7 +1497,6 @@ input:checked + .toggle-slider:before {
     flex-wrap: wrap;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
