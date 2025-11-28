@@ -1,4 +1,3 @@
-// Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDMmJ9hluWIfFlnr0fK2HpZ9R6jmLRON7Q",
     authDomain: "avaliacao-fisica-435bf.firebaseapp.com",
@@ -9,12 +8,10 @@ const firebaseConfig = {
     appId: "1:536053732608:web:6507020bf9d9d6317acfe5"
 };
 
-// Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const auth = firebase.auth();
 
-// Estado da aplicação
 let currentUser = null;
 let currentSection = 'dashboard';
 let editingAvaliacaoId = null;
